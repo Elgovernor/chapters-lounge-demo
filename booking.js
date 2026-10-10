@@ -1,0 +1,6 @@
+(function(root){
+  function todayInSA(now=new Date()){return new Intl.DateTimeFormat('en-CA',{timeZone:'Africa/Johannesburg',year:'numeric',month:'2-digit',day:'2-digit'}).format(now)}
+  function bookingText(v){return `Hello Chapters team,\n\nI would like to request a table.\n\nName: ${v.name.trim()}\nContact: ${v.contact.trim()}\nVenue: ${v.venue}\nDate: ${v.date}\nArrival time: ${v.time} (South Africa)\nGuests: ${v.guests}\nOccasion: ${v.occasion}\nNotes: ${v.notes.trim()||'None'}\n\nPlease confirm availability, opening hours and any entry fees or deposit requirements. I understand this is a request, not a confirmed reservation.\n\nKind regards,\n${v.name.trim()}`}
+  function validateBooking(v,today=todayInSA()){if(!v.name.trim()||!v.contact.trim())return 'Please enter your name and a contact number or email.';if(!/^\d{4}-\d{2}-\d{2}$/.test(v.date)||v.date<today)return 'Choose today or a future date.';if(!/^([01]\d|2[0-3]):[0-5]\d$/.test(v.time))return 'Choose an arrival time.';if(!Number.isInteger(Number(v.guests))||Number(v.guests)<1||Number(v.guests)>100)return 'Enter a guest count between 1 and 100.';return ''}
+  const api={todayInSA,bookingText,validateBooking}; if(typeof module!=='undefined')module.exports=api;else root.ChaptersBooking=api;
+})(typeof window!=='undefined'?window:globalThis);
